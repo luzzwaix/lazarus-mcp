@@ -1,3 +1,6 @@
+import HeroCoreMount from "../components/HeroCoreMount";
+import type { CSSProperties, ReactNode } from "react";
+
 const repoPulse = [
   { label: "DEAD REPO", tone: "bad", meta: "CI red / deps rotten" },
   { label: "AUTOPSY", tone: "warn", meta: "classify root cause" },
@@ -7,15 +10,15 @@ const repoPulse = [
 ];
 
 const heroLog = [
-  ["$", "lazarus resurrect https://github.com/old/dead-repo"],
-  ["FAIL", "install failed"],
-  ["FAIL", "build failed"],
-  ["FAIL", "tests failed"],
-  ["PATCH", "applying safe resurrection playbooks"],
-  ["PASS", "install passed"],
-  ["PASS", "build passed"],
-  ["PASS", "tests passed"],
-  ["PACK", "evidence/summary.json generated"]
+  { marker: "$", text: "lazarus resurrect https://github.com/old/dead-repo", tone: "cmd" },
+  { marker: "✖", text: "install failed", tone: "bad" },
+  { marker: "✖", text: "build failed", tone: "bad" },
+  { marker: "✖", text: "tests failed", tone: "bad" },
+  { marker: "→", text: "applying safe resurrection playbooks", tone: "warn" },
+  { marker: "✓", text: "install passed", tone: "good" },
+  { marker: "✓", text: "build passed", tone: "good" },
+  { marker: "✓", text: "tests passed", tone: "good" },
+  { marker: "✓", text: "evidence pack generated", tone: "good" }
 ];
 
 const before = ["install failed", "build failed", "tests failed", "CI broken"];
@@ -62,7 +65,7 @@ function Button({
   href,
   variant = "primary"
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
   href: string;
   variant?: "primary" | "ghost";
 }) {
@@ -93,16 +96,15 @@ function TerminalShell({ compact = false }: { compact?: boolean }) {
         <span className="mono text-[10px] uppercase tracking-[.22em] text-ash">autopsy room / live</span>
       </div>
       <div className={`relative z-10 space-y-2.5 ${compact ? "p-4" : "p-5 sm:p-6"}`}>
-        {heroLog.map(([tag, text]) => {
-          const tone = tag === "FAIL" ? "bad" : tag === "PASS" || tag === "PACK" ? "good" : tag === "PATCH" ? "warn" : "cmd";
+        {heroLog.map(({ marker, text, tone }) => {
           return (
-            <div className="mono grid min-w-0 grid-cols-[4.25rem_1fr] gap-3 text-xs leading-6 sm:text-sm" key={text}>
+            <div className="mono grid min-w-0 grid-cols-[1.4rem_1fr] gap-3 text-xs leading-6 sm:text-sm" key={text}>
               <span
-                className={`text-[10px] font-bold tracking-[.18em] ${
+                className={`text-base font-bold leading-6 ${
                   tone === "bad" ? "text-rot" : tone === "good" ? "text-toxin" : tone === "warn" ? "text-amber" : "text-bone"
                 }`}
               >
-                {tag}
+                {marker}
               </span>
               <span
                 className={`min-w-0 break-words ${
@@ -125,7 +127,7 @@ function ResurrectionMachine() {
       <div className="machine-spine" />
       <div className="grid gap-3 lg:grid-cols-5">
         {repoPulse.map((step, index) => (
-          <div className="machine-node group" key={step.label}>
+          <div className="machine-node group" key={step.label} style={{ "--node-index": index } as CSSProperties}>
             <div className="flex items-center justify-between">
               <ToneDot tone={step.tone} />
               <span className="mono text-[10px] text-ash">0{index + 1}</span>
@@ -206,8 +208,8 @@ export default function Page() {
               Dead repo in. Working repo out. Evidence included.
             </p>
             <p className="mt-7 max-w-2xl text-lg leading-8 text-ash">
-              A CLI-first resurrection engine for broken Node and Python repositories. Paste a local path or GitHub URL,
-              run the autopsy, apply safe repairs, verify the build, and ship the proof.
+              Paste a broken GitHub repo. Lazarus scans it, autopsies the failure, applies safe resurrection playbooks,
+              verifies the result, and generates judge-ready evidence.
             </p>
             <div className="mt-10 flex flex-col gap-3 sm:flex-row">
               <Button href="https://github.com/luzzwaix/lazarus-mcp">View GitHub</Button>
@@ -217,17 +219,33 @@ export default function Page() {
           </div>
 
           <div className="hero-object min-w-0">
-            <div className="mb-4 grid grid-cols-2 gap-3">
-              <div className="input-chip">
-                <span>INPUT</span>
-                <strong>GitHub HTTPS URL</strong>
+            <div className="core-stage">
+              <div className="core-grid-plate" />
+              <div className="core-status core-status-left">
+                <span>DEAD REPO</span>
+                <strong>deps rotten / CI red</strong>
               </div>
-              <div className="input-chip">
+              <div className="core-status core-status-right">
+                <span>WORKING REPO</span>
+                <strong>build + tests verified</strong>
+              </div>
+              <div className="core-status core-status-top">
                 <span>INPUT</span>
-                <strong>local path</strong>
+                <strong>GitHub URL or local path</strong>
+              </div>
+              <HeroCoreMount />
+              <div className="core-terminal">
+                <TerminalShell compact />
+              </div>
+              <div className="core-evidence">
+                <span className="mono text-[10px] font-bold uppercase tracking-[.24em] text-ash">Evidence pack</span>
+                <div className="mt-3 space-y-2">
+                  <div><span />AI_JUDGES.md</div>
+                  <div><span />RESURRECTION_REPORT.md</div>
+                  <div><span />evidence/summary.json</div>
+                </div>
               </div>
             </div>
-            <TerminalShell />
             <div className="mt-4 grid grid-cols-3 gap-3">
               <div className="metric-tile"><span>BUILD</span><strong>passed</strong></div>
               <div className="metric-tile"><span>TESTS</span><strong>13 / 13</strong></div>
