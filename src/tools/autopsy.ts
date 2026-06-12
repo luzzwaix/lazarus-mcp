@@ -4,13 +4,20 @@ import { detectRepo } from "../core/detect.js";
 import { normalizeLogs, suggestedPlaybooks } from "../core/logs.js";
 import { metricsFromCommands } from "../core/metrics.js";
 import { runCommand, skippedCommand, syntheticFailure } from "../core/runner.js";
+import { resolveWorkspaceTarget, type WorkspaceOptions } from "../core/workspace.js";
 import type { AutopsyResult, CommandResult, ErrorClass } from "../types.js";
 
 export interface AutopsyOptions {
   timeoutMs?: number;
+  workspace?: WorkspaceOptions;
 }
 
 export async function autopsy(path: string, options: AutopsyOptions = {}): Promise<AutopsyResult> {
+  const target = await resolveWorkspaceTarget(path, options.workspace);
+  return autopsyLocalPath(target.path, options);
+}
+
+export async function autopsyLocalPath(path: string, options: AutopsyOptions = {}): Promise<AutopsyResult> {
   const scan = detectRepo(path);
   const timeoutMs = options.timeoutMs ?? 120_000;
   const commands: CommandResult[] = [];

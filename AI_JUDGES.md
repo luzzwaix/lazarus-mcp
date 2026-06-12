@@ -23,6 +23,6 @@ Before/after command states are returned by `lazarus resurrect <path> --safe` an
 ## Known MVP Limitations
 
 - Node and Python only.
-- Local path input first; git URL cloning is not required for MVP.
+- Local path and GitHub HTTPS URL input are supported.
 - MCP is stdio-only.
 - No web UI, OAuth, remote deployment, Rust/Go/Java/mobile support, or speculative broad auto-repair.

@@ -49,6 +49,6 @@ Metrics are emitted per run from `lazarus resurrect` and written into generated 
 ## Remaining Limitations
 
 - MVP supports Node and Python only.
-- Git URL cloning is not implemented yet.
+- GitHub HTTPS URLs are cloned into `.lazarus-workspaces/<repo-name>-<timestamp>`.
 - The MCP adapter is stdio-only.
 - Playbooks are conservative and intentionally skip low-confidence repairs.

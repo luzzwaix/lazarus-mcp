@@ -1,9 +1,10 @@
 import { writeAiJudges, writeEvidenceSummary, writeResurrectionReport } from "../core/reports.js";
+import type { WorkspaceOptions } from "../core/workspace.js";
 import { resurrect } from "./resurrect.js";
 import type { EvidenceSummary } from "../types.js";
 
-export async function evidencePack(path: string) {
-  const result = await resurrect(path, { safe: true });
+export async function evidencePack(path: string, options: { workspace?: WorkspaceOptions } = {}) {
+  const result = await resurrect(path, { safe: true, workspace: options.workspace });
   const root = result.before.scan.path;
   const summary: EvidenceSummary = {
     project: "lazarus-mcp",

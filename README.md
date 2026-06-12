@@ -14,7 +14,7 @@ npm run build
 npm test
 ```
 
-Try a fixture:
+Try a local fixture path:
 
 ```bash
 npm run dev -- scan fixtures/dead-node-missing-build
@@ -23,13 +23,24 @@ npm run dev -- resurrect fixtures/dead-node-missing-build --safe
 npm run dev -- evidence-pack fixtures/dead-node-missing-build
 ```
 
+Try a GitHub HTTPS URL:
+
+```bash
+npm run dev -- scan https://github.com/<owner>/<repo>
+npm run dev -- autopsy https://github.com/<owner>/<repo>
+npm run dev -- resurrect https://github.com/<owner>/<repo> --safe
+npm run dev -- evidence-pack https://github.com/<owner>/<repo>
+```
+
+GitHub URLs are cloned into `.lazarus-workspaces/<repo-name>-<timestamp>`. Lazarus creates local branches only, never pushes upstream, and never modifies remotes.
+
 ## CLI Usage
 
 ```bash
-lazarus scan <path>
-lazarus autopsy <path>
-lazarus resurrect <path> [--safe] [--branch <name>]
-lazarus evidence-pack <path>
+lazarus scan <path-or-github-url>
+lazarus autopsy <path-or-github-url>
+lazarus resurrect <path-or-github-url> [--safe] [--branch <name>]
+lazarus evidence-pack <path-or-github-url>
 ```
 
 `scan` detects stack, package manager, config files, scripts, test runner hints, confidence, and health hints. `autopsy` runs safe install/build/test commands with timeouts and structured log classification. `resurrect` applies high-confidence playbooks, reruns the pipeline, and never pushes upstream. `evidence-pack` writes `RESURRECTION_REPORT.md`, `AI_JUDGES.md`, and `evidence/summary.json`.
@@ -65,7 +76,7 @@ The adapter is intentionally thin so the CLI core stays package-agnostic and gre
 ## Current MVP Scope
 
 - Supported stacks: Node and Python.
-- Supported input: local path.
+- Supported input: local path or GitHub HTTPS URL.
 - Supported Node fixes: missing build script, conservative ESM/CJS package type repair, strongly implied TypeScript dependency.
 - Supported Python fixes: missing pytest dependency when tests/config imply pytest.
 - No frontend, OAuth, remote HTTP server, broad language support, or remote git push.

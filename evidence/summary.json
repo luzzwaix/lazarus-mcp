@@ -25,7 +25,7 @@
   "externalCaseStudy": null,
   "knownLimitations": [
     "Node and Python only.",
-    "Local path input first.",
+    "Local path and GitHub HTTPS URL input are supported.",
     "MCP adapter is stdio-only.",
     "Only high-confidence patches are applied automatically."
   ]
