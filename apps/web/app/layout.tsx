@@ -2,12 +2,12 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Lazarus MCP | Bring dead repositories back to life",
+  title: "Lazarus MCP — Dead repo resurrection engine",
   description:
-    "A CLI-first and MCP tool that scans broken repositories, autopsies failures, applies safe playbooks, verifies builds/tests, and generates judge-ready evidence.",
+    "Dead repo in. Working repo out. Evidence included. A CLI-first and MCP tool that scans broken repositories, autopsies failures, applies safe playbooks, verifies builds/tests, and generates judge-ready evidence.",
   openGraph: {
-    title: "Lazarus MCP",
-    description: "Bring dead repositories back to life.",
+    title: "Lazarus MCP — Dead repo resurrection engine",
+    description: "Dead repo in. Working repo out. Evidence included.",
     type: "website"
   }
 };
