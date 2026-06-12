@@ -92,3 +92,14 @@ The adapter is intentionally thin so the CLI core stays package-agnostic and gre
 ## Screenshots / Logs
 
 Terminal demo placeholders live in `docs/DEMO_SCRIPT.md` and `docs/VIDEO_STORYBOARD.md`. The machine-readable run summary lives in `evidence/summary.json`.
+
+## Landing Page
+
+The Vercel-ready hackathon landing page lives in `apps/web`.
+
+```bash
+npm run landing:dev
+npm run landing:build
+```
+
+For Vercel, connect the GitHub repository, set the project root to `apps/web`, use the Next.js framework preset, and keep the build command as `npm run build`.

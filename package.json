@@ -10,7 +10,9 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "test": "vitest run",
-    "dev": "tsx src/cli.ts"
+    "dev": "tsx src/cli.ts",
+    "landing:dev": "npm --prefix apps/web run dev",
+    "landing:build": "npm --prefix apps/web run build"
   },
   "keywords": [
     "mcp",
