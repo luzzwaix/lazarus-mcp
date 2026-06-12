@@ -1,0 +1,23 @@
+# AGENTS.md
+
+You are building Lazarus MCP for a hackathon.
+
+Priorities
+1. Working CLIcore first.
+2. Green build and tests.
+3. Judge-readable evidence.
+4. No frontend unless asked.
+5. No broad scope.
+6. Support Node + Python only.
+7. If MCP adapter is unstable, keep CLIcore green and make MCP thin.
+
+Required commands
+- npm install
+- npm run build
+- npm test
+
+Before finishing
+- run build and tests
+- fix failures
+- summarize changed files
+- list remaining limitations

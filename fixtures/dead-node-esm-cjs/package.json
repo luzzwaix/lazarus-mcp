@@ -1,0 +1,9 @@
+{
+  "name": "dead-node-esm-cjs",
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "node index.js",
+    "test": "node index.js"
+  }
+}

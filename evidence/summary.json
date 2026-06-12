@@ -1,0 +1,32 @@
+{
+  "project": "lazarus-mcp",
+  "version": "0.1.0",
+  "mvp_scope": ["node", "python"],
+  "fixtures": [
+    {
+      "name": "dead-node-esm-cjs",
+      "before": { "install": "skipped", "build": "failed", "test": "failed" },
+      "after": { "install": "skipped", "build": "passed", "test": "passed" },
+      "appliedFixes": ["node.type_commonjs"]
+    },
+    {
+      "name": "dead-node-missing-build",
+      "before": { "install": "skipped", "build": "failed", "test": "passed" },
+      "after": { "install": "skipped", "build": "passed", "test": "passed" },
+      "appliedFixes": ["node.add_build_script"]
+    },
+    {
+      "name": "dead-python-missing-pytest",
+      "before": { "install": "skipped", "build": "passed", "test": "failed" },
+      "after": { "install": "passed", "build": "passed", "test": "passed" },
+      "appliedFixes": ["python.add_pytest_requirement"]
+    }
+  ],
+  "externalCaseStudy": null,
+  "knownLimitations": [
+    "Node and Python only.",
+    "Local path input first.",
+    "MCP adapter is stdio-only.",
+    "Only high-confidence patches are applied automatically."
+  ]
+}

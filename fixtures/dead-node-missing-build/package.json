@@ -1,0 +1,7 @@
+{
+  "name": "dead-node-missing-build",
+  "version": "0.0.0",
+  "scripts": {
+    "test": "node src/index.js"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "name": "lazarus-mcp",
+  "version": "0.1.0",
+  "description": "CLI-first autopsy and resurrection engine for broken Node/Python repositories.",
+  "type": "module",
+  "bin": {
+    "lazarus": "./dist/cli.js",
+    "lazarus-mcp": "./dist/server.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run",
+    "dev": "tsx src/cli.ts"
+  },
+  "keywords": [
+    "mcp",
+    "resurrection",
+    "autopsy",
+    "node",
+    "python"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "tsx": "^4.20.3",
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.4"
+  }
+}
