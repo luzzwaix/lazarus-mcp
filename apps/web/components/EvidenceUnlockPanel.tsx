@@ -30,7 +30,7 @@ export default function EvidenceUnlockPanel({ artifacts, unlockedCount }: Eviden
           const unlocked = index < unlockedCount;
           const content = (
             <>
-              <span className={`artifact-icon ${unlocked ? "artifact-icon-open" : ""}`}>{unlocked ? "✓" : "lock"}</span>
+              <span className={`artifact-icon ${unlocked ? "artifact-icon-open" : ""}`}>{unlocked ? "ok" : "lock"}</span>
               <span>{artifact.name}</span>
               <small>{unlocked ? "ready" : "sealed"}</small>
             </>
@@ -40,8 +40,8 @@ export default function EvidenceUnlockPanel({ artifacts, unlockedCount }: Eviden
             <motion.a
               className="artifact-row is-unlocked"
               href={artifact.href}
-              initial={{ opacity: 0.45, x: 10 }}
-              animate={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0.45, x: 10, scale: 0.98 }}
+              animate={{ opacity: 1, x: 0, scale: 1 }}
               transition={{ duration: 0.28, delay: index * 0.04 }}
               key={artifact.name}
             >

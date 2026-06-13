@@ -3,7 +3,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 import type { CSSProperties } from "react";
 import { useEffect, useRef, useState } from "react";
-import AnimatedTerminal from "./AnimatedTerminal";
+import AnimatedTerminal, { type TerminalEntry } from "./AnimatedTerminal";
 import BeforeAfterDiff from "./BeforeAfterDiff";
 import EvidenceUnlockPanel from "./EvidenceUnlockPanel";
 import HealthMeter from "./HealthMeter";
@@ -20,22 +20,30 @@ const steps: PipelineStep[] = [
   { id: "evidence", label: "EVIDENCE", short: "pack sealed" }
 ];
 
-const terminalLines = [
-  "lazarus scan https://github.com/old/dead-repo",
-  "repo detected: node/typescript",
-  "dependency rot detected",
-  "build script missing",
-  "tests failing",
-  "safe patch plan generated",
-  "applying resurrection playbooks",
-  "install passed",
-  "build passed",
-  "tests passed",
-  "evidence pack generated"
+const idleLines: TerminalEntry[] = [
+  { text: "lazarus lab armed", tone: "muted", group: "idle" },
+  { text: "waiting for dead repository", tone: "warn", group: "idle" },
+  { text: "autopsy engine online", tone: "muted", group: "idle" },
+  { text: "evidence writer standing by", tone: "muted", group: "idle" }
+];
+
+const terminalLines: TerminalEntry[] = [
+  { text: "lazarus scan https://github.com/luzzwaix/lazarus-mcp", tone: "command", group: "scan" },
+  { text: "repo detected: node/typescript", tone: "muted", group: "scan" },
+  { text: "dependency rot detected", tone: "bad", group: "autopsy" },
+  { text: "build script missing", tone: "bad", group: "autopsy" },
+  { text: "tests failing", tone: "bad", group: "autopsy" },
+  { text: "safe patch plan generated", tone: "warn", group: "patch" },
+  { text: "applying resurrection playbooks", tone: "warn", group: "patch" },
+  { text: "install passed", tone: "good", group: "verify" },
+  { text: "build passed", tone: "good", group: "verify" },
+  { text: "tests passed", tone: "good", group: "verify" },
+  { text: "evidence pack generated", tone: "good", group: "evidence" }
 ];
 
 const stepByLine = [0, 1, 1, 2, 2, 3, 3, 4, 4, 4, 5];
 const healthByLine = [12, 20, 27, 34, 42, 52, 63, 75, 84, 90, 94];
+const phaseByLine = ["DEAD", "SCAN", "AUTOPSY", "AUTOPSY", "AUTOPSY", "PATCHING", "PATCHING", "VERIFYING", "VERIFYING", "VERIFYING", "REVIVED"];
 
 const artifacts = [
   { name: "RESURRECTION_REPORT.md", href: `${githubUrl}/blob/main/RESURRECTION_REPORT.md` },
@@ -49,8 +57,9 @@ type Phase = "idle" | "running" | "complete";
 export default function LabCockpit() {
   const reduced = useReducedMotion();
   const timers = useRef<number[]>([]);
-  const [repoUrl, setRepoUrl] = useState("https://github.com/old/dead-repo");
+  const [repoUrl, setRepoUrl] = useState(githubUrl);
   const [phase, setPhase] = useState<Phase>("idle");
+  const [phaseLabel, setPhaseLabel] = useState("DEAD");
   const [activeStep, setActiveStep] = useState(0);
   const [visibleLines, setVisibleLines] = useState(0);
   const [health, setHealth] = useState(12);
@@ -72,6 +81,7 @@ export default function LabCockpit() {
   const reset = () => {
     clearTimers();
     setPhase("idle");
+    setPhaseLabel("DEAD");
     setActiveStep(0);
     setVisibleLines(0);
     setHealth(12);
@@ -81,6 +91,7 @@ export default function LabCockpit() {
   const run = () => {
     clearTimers();
     setPhase("running");
+    setPhaseLabel("AUTOPSY");
     setActiveStep(0);
     setVisibleLines(0);
     setHealth(12);
@@ -91,6 +102,7 @@ export default function LabCockpit() {
       setActiveStep(steps.length - 1);
       setHealth(94);
       setUnlockedCount(artifacts.length);
+      setPhaseLabel("REVIVED");
       setPhase("complete");
       return;
     }
@@ -101,6 +113,7 @@ export default function LabCockpit() {
         setVisibleLines(index + 1);
         setActiveStep(stepByLine[index]);
         setHealth(healthByLine[index]);
+        setPhaseLabel(phaseByLine[index]);
       }, cursor);
       cursor += index < 6 ? 430 : 360;
     });
@@ -112,6 +125,7 @@ export default function LabCockpit() {
     schedule(() => {
       setActiveStep(steps.length - 1);
       setHealth(94);
+      setPhaseLabel("REVIVED");
       setPhase("complete");
     }, cursor + artifacts.length * 220 + 80);
   };
@@ -121,7 +135,7 @@ export default function LabCockpit() {
 
   return (
     <section
-      className="lab-shell"
+      className={`lab-shell phase-${phaseLabel.toLowerCase()}`}
       id="lab"
       onPointerMove={(event) => {
         const rect = event.currentTarget.getBoundingClientRect();
@@ -141,7 +155,7 @@ export default function LabCockpit() {
         </div>
         <div className="lab-header-status">
           <span className={`state-pill ${complete ? "state-pill-good" : running ? "state-pill-muted" : "state-pill-bad"}`}>
-            {complete ? "resurrection complete" : running ? "sequence running" : "dead repo loaded"}
+            {complete ? "resurrection complete" : running ? phaseLabel : "dead repo loaded"}
           </span>
           <a href={githubUrl}>GitHub</a>
         </div>
@@ -172,12 +186,28 @@ export default function LabCockpit() {
               </motion.button>
             ) : null}
           </section>
-          <HealthMeter target={health} complete={complete} running={running} />
+          <HealthMeter target={health} complete={complete} running={running} phaseLabel={phaseLabel} />
         </aside>
 
         <main className="cockpit-center">
-          <ResurrectionPipeline steps={steps} activeStep={activeStep} complete={complete} />
-          <AnimatedTerminal lines={terminalLines} visibleCount={visibleLines} running={running} />
+          <div className="autopsy-console">
+            <div className="console-topline">
+              <span className="eyebrow">Autopsy console</span>
+              <div>
+                <span className={`state-pill ${complete ? "state-pill-good" : running ? "state-pill-muted" : "state-pill-bad"}`}>{phaseLabel}</span>
+                {complete ? <span className="state-pill state-pill-good">4 checks passed</span> : null}
+              </div>
+            </div>
+            <ResurrectionPipeline steps={steps} activeStep={activeStep} complete={complete} running={running} />
+            <AnimatedTerminal
+              idleLines={idleLines}
+              lines={terminalLines}
+              visibleCount={visibleLines}
+              running={running}
+              complete={complete}
+              phaseLabel={phaseLabel}
+            />
+          </div>
           <BeforeAfterDiff complete={complete} />
         </main>
 

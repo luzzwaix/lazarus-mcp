@@ -3,7 +3,7 @@ import LabCockpit from "../components/LabCockpit";
 import ProofTiles from "../components/ProofTiles";
 
 const githubUrl = "https://github.com/luzzwaix/lazarus-mcp";
-const evidenceUrl = "https://github.com/luzzwaix/lazarus-mcp/blob/main/AI_JUDGES.md";
+const evidenceUrl = "https://github.com/luzzwaix/lazarus-mcp/blob/main/RESURRECTION_REPORT.md";
 
 const deathSignals = ["Dependency rot", "Runtime drift", "CI decay", "Test failure", "Maintainer abandonment"];
 const architecture = ["CLI core", "MCP adapter", "Playbooks", "Verifier", "Evidence pack"];
@@ -49,7 +49,13 @@ export default function Page() {
       <LabCockpit />
 
       <section className="product-section">
-        <div className="section-kicker">Why repos die</div>
+        <div className="module-head">
+          <div>
+            <div className="section-kicker">Diagnostics</div>
+            <h2>Why repos die</h2>
+          </div>
+          <span>failure taxonomy</span>
+        </div>
         <div className="diagnostic-grid">
           {deathSignals.map((signal) => (
             <div className="diagnostic-chip" key={signal}>
@@ -62,8 +68,8 @@ export default function Page() {
 
       <section className="product-section compact-section">
         <div>
-          <div className="section-kicker">How Lazarus works</div>
-          <h2>Thin adapter. Working core. Evidence at the end.</h2>
+          <div className="section-kicker">Architecture</div>
+          <h2>Thin adapter. Working core.</h2>
         </div>
         <div className="architecture-strip">
           {architecture.map((item, index) => (
@@ -79,7 +85,7 @@ export default function Page() {
         <div className="section-heading-row">
           <div>
             <div className="section-kicker">Judge proof</div>
-            <h2>Proof tiles, not promises.</h2>
+            <h2>Evidence tiles</h2>
           </div>
           <ProductButton href={evidenceUrl} variant="secondary">Open evidence</ProductButton>
         </div>
@@ -87,18 +93,24 @@ export default function Page() {
       </section>
 
       <section className="product-section run-section" id="demo">
-        <div>
-          <div className="section-kicker">Run it yourself</div>
-          <h2>Clone. Verify. Open the lab.</h2>
-        </div>
-        <pre className="run-terminal">
-          <code>{`git clone https://github.com/luzzwaix/lazarus-mcp
+          <div>
+            <div className="section-kicker">Run it yourself</div>
+            <h2>Clone, verify, open the lab.</h2>
+          </div>
+        <div className="run-console">
+          <div>
+            <span>local setup</span>
+            <button aria-label="Copy commands">copy</button>
+          </div>
+          <pre className="run-terminal">
+            <code>{`git clone https://github.com/luzzwaix/lazarus-mcp
 cd lazarus-mcp
 npm install
 npm run build
 npm test
 npm run landing:dev`}</code>
-        </pre>
+          </pre>
+        </div>
       </section>
 
       <section className="final-product-cta">
