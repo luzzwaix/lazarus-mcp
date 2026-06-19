@@ -1,6 +1,6 @@
 const proof = [
   ["Build passed", "verified locally"],
-  ["Tests passed", "6 files / 13 tests"],
+  ["Tests passed", "7 files / 18 tests"],
   ["GitHub URL support", "HTTPS clone workflow"],
   ["Public repo", "ready for review"],
   ["Reproducible fixtures", "deterministic proof"],

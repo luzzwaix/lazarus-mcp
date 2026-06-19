@@ -1,10 +1,26 @@
 # Lazarus MCP
 
-Lazarus MCP autopsies broken Node/Python repos, applies safe resurrection playbooks, reruns the pipeline, and writes judge-ready proof.
+[![CI](https://github.com/luzzwaix/lazarus-mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/luzzwaix/lazarus-mcp/actions/workflows/ci.yml)
+[![MIT License](https://img.shields.io/badge/license-MIT-39ff88.svg)](LICENSE)
+[![Live Demo](https://img.shields.io/badge/live-Lazarus_Lab-39ff88.svg)](https://web-jet-tau-46.vercel.app)
+
+Lazarus MCP autopsies broken Node/Python repositories, applies conservative
+resurrection playbooks, reruns install/build/test, and writes judge-ready
+evidence.
+
+**Dead repo in. Working repo out. Evidence included.**
+
+[Live Lazarus Lab](https://web-jet-tau-46.vercel.app) |
+[60-second judge guide](docs/JUDGE_GUIDE.md) |
+[Evidence report](RESURRECTION_REPORT.md)
 
 ## Why It Exists
 
-Hackathon judges and maintainers need more than an AI claim. They need evidence: what failed, why it failed, what changed, and whether build/test is green afterward. Lazarus keeps the scope narrow and auditable: local Node and Python repositories only, conservative patches only, no remote pushes.
+Hackathon judges and maintainers need more than an AI claim. They need evidence:
+what failed, why it failed, what changed, and whether build/test is green
+afterward. Lazarus keeps the scope narrow and auditable: Node and Python,
+local paths or public GitHub HTTPS URLs, conservative patches, and no remote
+pushes.
 
 ## Quickstart
 
@@ -56,6 +72,19 @@ The stdio adapter in `src/server.ts` exposes:
 
 The adapter is intentionally thin so the CLI core stays package-agnostic and green if MCP package APIs shift.
 
+Example client configuration after `npm run build`:
+
+```json
+{
+  "mcpServers": {
+    "lazarus": {
+      "command": "node",
+      "args": ["/absolute/path/to/lazarus-mcp/dist/server.js"]
+    }
+  }
+}
+```
+
 ## Proof It Works
 
 - `tests/detect.test.ts` covers stack and pytest detection.
@@ -63,7 +92,14 @@ The adapter is intentionally thin so the CLI core stays package-agnostic and gre
 - `tests/resurrect.node.test.ts` resurrects `fixtures/dead-node-esm-cjs` and `fixtures/dead-node-missing-build`.
 - `tests/resurrect.python.test.ts` resurrects `fixtures/dead-python-missing-pytest`.
 - `tests/report.test.ts` verifies judge evidence generation.
-- CI runs `npm install`, `npm run build`, and `npm test`.
+- `tests/workspace.test.ts` verifies GitHub URL parsing, isolated clone targets,
+  and clone-once behavior.
+- `tests/mcp.test.ts` verifies initialization, tool discovery, tool calls,
+  invalid-tool rejection, and a real stdio MCP session.
+- CI runs clean installs, the CLI/MCP build, all tests, and the production
+  Lazarus Lab build.
+
+Current verified suite: **7 test files / 18 tests**.
 
 ## Demo Flow
 
@@ -79,7 +115,8 @@ The adapter is intentionally thin so the CLI core stays package-agnostic and gre
 - Supported input: local path or GitHub HTTPS URL.
 - Supported Node fixes: missing build script, conservative ESM/CJS package type repair, strongly implied TypeScript dependency.
 - Supported Python fixes: missing pytest dependency when tests/config imply pytest.
-- No frontend, OAuth, remote HTTP server, broad language support, or remote git push.
+- Interactive static Lazarus Lab frontend.
+- No OAuth, remote HTTP MCP server, broad language support, or remote git push.
 
 ## Safety
 
@@ -89,17 +126,19 @@ The adapter is intentionally thin so the CLI core stays package-agnostic and gre
 - Low-confidence fixes are reported as suggestions instead of mutations.
 - Applied changes are intentionally small and auditable.
 
-## Screenshots / Logs
+## Product Demo
 
-Terminal demo placeholders live in `docs/DEMO_SCRIPT.md` and `docs/VIDEO_STORYBOARD.md`. The machine-readable run summary lives in `evidence/summary.json`.
-
-## Landing Page
-
-The Vercel-ready hackathon landing page lives in `apps/web`.
+The Vercel-ready Lazarus Lab lives in `apps/web`. It is explicitly a static
+frontend simulation of the working CLI/MCP workflow; arbitrary repositories
+are not executed on Vercel.
 
 ```bash
 npm run landing:dev
 npm run landing:build
 ```
 
-For Vercel, connect the GitHub repository, set the project root to `apps/web`, use the Next.js framework preset, and keep the build command as `npm run build`.
+Demo script and recording plan:
+
+- `docs/DEMO_SCRIPT.md`
+- `docs/VIDEO_STORYBOARD.md`
+- `docs/JUDGE_GUIDE.md`

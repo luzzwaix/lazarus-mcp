@@ -9,6 +9,9 @@ Lazarus MCP is a CLI-first TypeScript project plus a thin stdio MCP adapter. It 
 - `fixtures/`: three deterministic broken repos used by tests.
 - `RESURRECTION_REPORT.md`: before/after narrative and limitations.
 - `evidence/summary.json`: machine-readable judge pack.
+- `docs/JUDGE_GUIDE.md`: 60-second verification path and clear demo boundaries.
+- GitHub Actions: public independent build/test history.
+- Lazarus Lab: deployed interactive product simulation.
 
 ## Fixture Proof
 
@@ -25,4 +28,5 @@ Before/after command states are returned by `lazarus resurrect <path> --safe` an
 - Node and Python only.
 - Local path and GitHub HTTPS URL input are supported.
 - MCP is stdio-only.
-- No web UI, OAuth, remote deployment, Rust/Go/Java/mobile support, or speculative broad auto-repair.
+- The deployed web UI is a static simulation and does not execute repositories.
+- No OAuth, remote HTTP MCP transport, Rust/Go/Java/mobile support, or speculative broad auto-repair.

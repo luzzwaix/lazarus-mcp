@@ -2,6 +2,13 @@
   "project": "lazarus-mcp",
   "version": "0.1.0",
   "mvp_scope": ["node", "python"],
+  "verification": {
+    "testFiles": 7,
+    "tests": 18,
+    "ci": "https://github.com/luzzwaix/lazarus-mcp/actions",
+    "demo": "https://web-jet-tau-46.vercel.app",
+    "judgeGuide": "docs/JUDGE_GUIDE.md"
+  },
   "fixtures": [
     {
       "name": "dead-node-esm-cjs",
